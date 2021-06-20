@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row mb-3">
+        <div class="col-sm-12 bg-warning">
+            <h2 class="display-4 text-center">Statistiky</h2>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="bg-secondary text-light p-2 mb-5 col-md-12">
+                <h2 class="display-4 text-center">Počet vynálezců v zemi</h2>
+            </div>
+            <canvas id="inventors_num" style="width:100%;max-width:600px; align-content: center" class="text-center mb-5"></canvas>
+
+            <div class="bg-secondary text-light p-2 mb-3 col-md-12 mt-5">
+                <h2 class="display-4 text-center">Počet vynálezů v kategorii</h2>
+            </div>
+            <div id="categories_num" style="width:100%;max-width:700px"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script>
+    let xValues = [];
+    let yValues = {{ statistics_inventors }};
+    let barColors = [];
+
+    {% for nation in statistics_nations %}
+        xValues.push("{{ nation }}")
+    {% endfor %}
+
+    function getRandomColor() {
+      let letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    {% for num in statistics_nations %}
+        barColors.push(getRandomColor())
+    {% endfor %}
+
+    new Chart("inventors_num", {
+      type: "bar",
+      data: {
+        labels: xValues,
+        datasets: [{
+          backgroundColor: barColors,
+          data: yValues
+        }]
+      },
+      options: {
+        legend: {display: false},
+        title: {
+          display: false,
+          text: "Počet vynálezců v zemi"
+        }
+      }
+    });
+    </script>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+    let xArray = [];
+    let yArray = {{ statistics_inventions }};
+
+    let layout = {title:""};
+
+    let data = [{labels:xArray, values:yArray, type:"pie"}];
+
+    {% for category in statistics_categories %}
+        xArray.push("{{ category }}")
+    {% endfor %}
+
+    Plotly.newPlot("categories_num", data, layout);
+    </script>
+{% endblock %}

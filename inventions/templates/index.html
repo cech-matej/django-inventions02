@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col-sm-12 bg-warning">
+        <h2 class="display-4 text-center">Náhodný vynález</h2>
+    </div>
+</div>
+<div class="container">
+<div class="row">
+    <div class="col-md-9">
+        <div class="row">
+<!--    {% for invention in inventions %}-->
+<!--    <div class="col-md-2">-->
+<!--        <div class="card">-->
+<!--            {% if invention.photo %}-->
+<!--            <img class="card-img-top" src="{{ invention.photo.url }}" alt="{{ invention.name }}">-->
+<!--            {% endif %}-->
+<!--            <div class="card-body">-->
+<!--                <h4 class="card-title">{{ invention.name }}</h4>-->
+<!--                <p class="card-text"><strong>Kategorie:</strong> {% for category in invention.category.all %}{{ category.name }}{% endfor %}</p>-->
+<!--                <p><strong>Datum vynalezení:</strong> {{ invention.date_of_invention }}</p>-->
+<!--                <a href="#" class="btn btn-primary">Podrobnosti</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    {% endfor %}-->
+
+    <!-- NÁHODNÝ VYNÁLEZ -->
+        <div class="bg-secondary text-light p-2 mb-3 col-md-12">
+            <h2 class="display-4 text-center">{{ random_invention.name }}</h2>
+        </div>
+        <div class="col-md-8">
+            <div>
+                {% if random_invention.description %}
+                    <div class="text-justify">{{ random_invention.description }}</div>
+                {% else %}
+                <div class="text-justify text-center"><i>Zdá se, že popis vynálezu nebyl správně nastaven!</i></div>
+                {% endif %}
+            </div>
+
+            <table class="table table-striped mt-5">
+                <tbody>
+                  <tr>
+                      <td><b>Datum vynalezení</b></td>
+                      {% if random_invention.date_of_invention %}
+                        <td>{{ random_invention.date_of_invention }}</td>
+                      {% else %}
+                        <td><i>Datum nebylo nastaveno</i></td>
+                      {% endif %}
+                  </tr>
+                  <tr>
+                    {% if random_invention.inventors.all.count > 1 %}
+                        <td><b>Vynálezci</b></td>
+                    {% else %}
+                        <td><b>Vynálezce</b></td>
+                    {% endif %}
+                    <td>
+                      {% for inventor in random_invention.inventors.all %}
+                        <span class="badge badge-secondary">{{ inventor.first_name }} {{ inventor.last_name }}</span>
+                      {% endfor %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><b>Kategorie</b></td>
+                    <td>
+                      {% for category in random_invention.category.all %}
+                        <span class="badge badge-secondary">{{ category.name }}</span>
+                      {% endfor %}
+                    </td>
+                  </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4 d-flex align-items-center">
+            {% if random_invention.photo %}
+                <a href="{{ random_invention.photo.url }}" data-toggle="lightbox" data-gallery="gallery">
+                    <img src="{{ random_invention.photo.url }}" class="img-fluid" alt="Foto vynálezu">
+                </a>
+            {% else %}
+                <a href="/media/img/image-not-found.png" data-toggle="lightbox" data-gallery="gallery">
+                    <img src="/media/img/image-not-found.png" class="img-fluid" alt="Foto vynálezu">
+                </a>
+            {% endif %}
+        </div>
+            </div>
+    </div>
+
+    <div class="col-md-3">
+        <h2 class="text-center bg-info text-light p-2">Kategorie vynálezů</h2>
+        {% include "blocks/category_list.html" %}
+    </div>
+</div>
+
+
+<div class="row mt-5">
+    <div class="col-sm-12">
+        <strong>Celkový počet vynálezů:</strong> {{ num_inventions }}
+    </div>
+</div>
+</div>
+{% endblock %}

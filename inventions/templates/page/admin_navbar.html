@@ -1,0 +1,15 @@
+<div class="sticky">
+    <div class="row superuser-nav">
+        <div class="col-8">
+            <a href="/admin"><i class="fas fa-user ml-3 mr-3"></i> Administrační prostředí</a>
+        </div>
+
+        <div class="col-4">
+            {% if perms.inventions.add_invention %}
+                <a href="{% url 'invention-create' %}" class="btn btn-success">Nový vynález</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>

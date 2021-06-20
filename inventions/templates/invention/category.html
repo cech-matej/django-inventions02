@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Seznam vynálezů{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <h2>Seznam filmů: {{ view.kwargs.category_name }}</h2>
+    </div>
+</div>
+<div class="row">
+    {% for category in invention_category %}
+    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+        <div class="card">
+            {% if invention.photo %}
+            <img class="card-img-top" src="{{ invention.photo.url }}" alt="{{ invention.name }}">
+            {% endif %}
+            <div class="card-body">
+                <h4 class="card-title"><a href="{% url 'invention_detail' invention.pk %}">{{ invention.name }}</a></h4>
+                <p class="card-text">{% for category in invention.category.all %}<a href="{% url 'invention_category' category.name %}" class="btn btn-info">{{ category.name }}</a> {% endfor %}</p>
+                <a href="{% url 'invention_detail' invention.pk %}" class="btn btn-primary">Podrobnosti</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <strong>Celkový počet vynálezů:</strong> {{ num_inventions }}
+    </div>
+</div>
+{% endblock %}
